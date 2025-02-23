@@ -1,9 +1,11 @@
+// Courses.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
   const [course, setCourse] = useState("");
-  const [editCourse, setEditCourse] = useState(null); // This will store the course being edited
-  const [newCourseName, setNewCourseName] = useState(""); // This will store the new course name for editing
+  const [editCourse, setEditCourse] = useState(null);
+  const [newCourseName, setNewCourseName] = useState("");
 
   const handleAdd = () => {
     if (course) {
@@ -13,21 +15,21 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
   };
 
   const handleEdit = (courseName) => {
-    setEditCourse(courseName); // Set the course being edited
-    setNewCourseName(courseName); // Set the value in the input for editing
+    setEditCourse(courseName);
+    setNewCourseName(courseName);
   };
 
   const handleUpdate = () => {
     if (newCourseName !== editCourse) {
-      onUpdate(editCourse, newCourseName); // Dispatch the update action
+      onUpdate(editCourse, newCourseName);
     }
-    setEditCourse(null); // Exit edit mode
-    setNewCourseName(""); // Clear the input
+    setEditCourse(null);
+    setNewCourseName("");
   };
 
   const handleCancel = () => {
-    setEditCourse(null); // Exit edit mode without saving
-    setNewCourseName(""); // Clear the input
+    setEditCourse(null);
+    setNewCourseName("");
   };
 
   return (
@@ -98,6 +100,13 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
           </li>
         ))}
       </ul>
+
+      {/* Button to go to Offerings page */}
+      <Link to="/offerings">
+        <button className="mt-4 bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600">
+          Next to Offerings
+        </button>
+      </Link>
     </div>
   );
 };

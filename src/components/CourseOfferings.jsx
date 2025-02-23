@@ -1,12 +1,15 @@
+
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addOffering, deleteOffering } from "../features/courseSlice";
+import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation
 
-const CourseOfferings = ({ courses, courseTypes, offerings, onAdd, onDelete }) => {
+const CourseOfferings = ({ courses, courseTypes, offerings }) => {
   const [course, setCourse] = useState("");
   const [type, setType] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const handleAddOffering = () => {
     if (course && type) {
@@ -51,6 +54,7 @@ const CourseOfferings = ({ courses, courseTypes, offerings, onAdd, onDelete }) =
         <button
           onClick={handleAddOffering}
           className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+          disabled={!course || !type} // Disable button if fields are empty
         >
           Add Offering
         </button>
@@ -63,7 +67,11 @@ const CourseOfferings = ({ courses, courseTypes, offerings, onAdd, onDelete }) =
             <li key={index} className="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-lg shadow-sm">
               <span>{offering.course} - {offering.type}</span>
               <button
-                onClick={() => dispatch(deleteOffering(offering))}
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to delete this offering?")) {
+                    dispatch(deleteOffering(offering));
+                  }
+                }}
                 className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
               >
                 Delete
@@ -71,6 +79,14 @@ const CourseOfferings = ({ courses, courseTypes, offerings, onAdd, onDelete }) =
             </li>
           ))}
         </ul>
+
+        {/* Button to navigate to registration page */}
+        <button
+          onClick={() => navigate("/registrations")} // Navigating to registration page
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-4"
+        >
+          Go to Registration
+        </button>
       </div>
     </div>
   );
