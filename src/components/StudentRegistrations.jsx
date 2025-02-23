@@ -1,17 +1,16 @@
 
+
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { registerStudent, deleteStudent } from "../features/courseSlice";
 
-const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => {
+const StudentRegistrations = ({ offerings, registeredStudents }) => {
   const [studentName, setStudentName] = useState("");
   const [selectedOffering, setSelectedOffering] = useState("");
 
   const dispatch = useDispatch();
 
-  // Ensure offerings are loaded
   useEffect(() => {
-    // If offerings are available, set default offering
     if (offerings.length > 0) {
       setSelectedOffering(offerings[0].course); // Set default offering to first course
     }
@@ -20,7 +19,9 @@ const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => 
   const handleRegister = (e) => {
     e.preventDefault();
     if (studentName && selectedOffering) {
-      dispatch(registerStudent({ name: studentName, offering: selectedOffering }));
+      dispatch(
+        registerStudent({ name: studentName, offering: selectedOffering })
+      );
       setStudentName(""); // Reset student name input
       setSelectedOffering(""); // Reset offering input
     } else {
@@ -32,7 +33,6 @@ const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => 
     dispatch(deleteStudent(studentName));
   };
 
-  // Conditional rendering to check if offerings are available
   if (!offerings || offerings.length === 0) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
@@ -45,7 +45,9 @@ const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => 
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-      <h3 className="text-xl font-semibold mb-4 text-green-600">Student Registrations</h3>
+      <h3 className="text-xl font-semibold mb-4 text-green-600">
+        Student Registrations
+      </h3>
 
       <form onSubmit={handleRegister}>
         <div className="flex space-x-4 mb-4">
@@ -65,7 +67,10 @@ const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => 
           >
             <option value="">Select Offering</option>
             {offerings.map((offering, index) => (
-              <option key={index} value={`${offering.course} - ${offering.type}`}>
+              <option
+                key={index}
+                value={`${offering.course} - ${offering.type}`}
+              >
                 {`${offering.course} - ${offering.type}`}
               </option>
             ))}
@@ -85,7 +90,10 @@ const StudentRegistrations = ({ offerings, registeredStudents, onRegister }) => 
           <h4 className="font-semibold text-gray-700">Registered Students:</h4>
           <ul className="space-y-2 mt-4">
             {registeredStudents.map((student, index) => (
-              <li key={index} className="bg-gray-50 px-4 py-2 rounded-lg shadow-sm flex justify-between items-center">
+              <li
+                key={index}
+                className="bg-gray-50 px-4 py-2 rounded-lg shadow-sm flex justify-between items-center"
+              >
                 <span className="text-gray-700">
                   {student.name} ({student.offering})
                 </span>

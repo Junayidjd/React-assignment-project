@@ -1,15 +1,16 @@
 
+
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addOffering, deleteOffering } from "../features/courseSlice";
-import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const CourseOfferings = ({ courses, courseTypes, offerings }) => {
   const [course, setCourse] = useState("");
   const [type, setType] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
 
   const handleAddOffering = () => {
     if (course && type) {
@@ -54,7 +55,7 @@ const CourseOfferings = ({ courses, courseTypes, offerings }) => {
         <button
           onClick={handleAddOffering}
           className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-          disabled={!course || !type} // Disable button if fields are empty
+          disabled={!course || !type}
         >
           Add Offering
         </button>
@@ -80,9 +81,8 @@ const CourseOfferings = ({ courses, courseTypes, offerings }) => {
           ))}
         </ul>
 
-        {/* Button to navigate to registration page */}
         <button
-          onClick={() => navigate("/registrations")} // Navigating to registration page
+          onClick={() => navigate("/registrations")}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-4"
         >
           Go to Registration

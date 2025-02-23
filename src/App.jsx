@@ -1,19 +1,14 @@
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react"; // Corrected import
-import { persistor } from "./store/store"; // Import persistor
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./store/store";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Courses from "./components/Courses";
 import CourseOfferings from "./components/CourseOfferings";
 import StudentRegistrations from "./components/StudentRegistrations";
-import { addCourse, deleteCourse, updateCourse } from "./features/courseSlice";
-import {
-  addOffering,
-  deleteOffering,
-  registerStudent,
-} from "./features/courseSlice";
 
 const App = () => {
   const courses = useSelector((state) => state.courses.courses);
@@ -25,10 +20,6 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  console.log("Courses:", courses);
-  console.log("Course Types:", courseTypes);
-  console.log("Offerings:", offerings);
-
   return (
     <Router>
       <PersistGate loading={null} persistor={persistor}>
@@ -39,42 +30,15 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route
                 path="/courses"
-                element={
-                  <Courses
-                    courses={courses}
-                    onAdd={(course) => dispatch(addCourse(course))}
-                    onDelete={(course) => dispatch(deleteCourse(course))}
-                    onUpdate={(oldCourse, newCourse) =>
-                      dispatch(updateCourse({ oldCourse, newCourse }))
-                    }
-                  />
-                }
+                element={<Courses courses={courses} />}
               />
               <Route
                 path="/offerings"
-                element={
-                  <CourseOfferings
-                    courses={courses}
-                    courseTypes={courseTypes}
-                    offerings={offerings}
-                    onAdd={(course, type) =>
-                      dispatch(addOffering({ course, type }))
-                    }
-                    onDelete={(offering) => dispatch(deleteOffering(offering))}
-                  />
-                }
+                element={<CourseOfferings courses={courses} courseTypes={courseTypes} offerings={offerings} />}
               />
               <Route
                 path="/registrations"
-                element={
-                  <StudentRegistrations
-                    offerings={offerings}
-                    onRegister={(offering, studentName) =>
-                      dispatch(registerStudent({ offering, studentName }))
-                    }
-                    registeredStudents={registeredStudents}
-                  />
-                }
+                element={<StudentRegistrations offerings={offerings} registeredStudents={registeredStudents} />}
               />
             </Routes>
           </main>

@@ -7,7 +7,7 @@ import courseReducer from "../features/courseSlice"; // Your course slice
 const persistConfig = {
   key: "root", // key for the persisted data
   storage, // storage method (localStorage in this case)
-  whitelist: ['courses'], // Only persist the courses state (optional)
+  whitelist: ['courses', 'offerings', 'registeredStudents'], // Persist offerings and registeredStudents too
 };
 
 // Wrap the course reducer with persistReducer
