@@ -1,4 +1,3 @@
-// Courses.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +8,7 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
 
   const handleAdd = () => {
     if (course) {
-      onAdd(course);
+      onAdd(course); // This will call the dispatch function passed from the parent component
       setCourse(""); // Clear input after adding
     }
   };
@@ -21,7 +20,7 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
 
   const handleUpdate = () => {
     if (newCourseName !== editCourse) {
-      onUpdate(editCourse, newCourseName);
+      onUpdate(editCourse, newCourseName); // This will call the dispatch function passed from the parent component
     }
     setEditCourse(null);
     setNewCourseName("");
@@ -84,7 +83,7 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
                 <div className="space-x-2">
                   <button
                     className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-                    onClick={() => onDelete(course)}
+                    onClick={() => onDelete(course)} // Dispatch delete
                   >
                     Delete
                   </button>

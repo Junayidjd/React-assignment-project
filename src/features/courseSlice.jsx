@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   courseTypes: ["Individual", "Group", "Special"],
-  courses: ["Math", "Science"],
+  courses: ["Math", "Science", "English"],
   offerings: [],
   registeredStudents: [],
 };
