@@ -1,95 +1,103 @@
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addCourse, deleteCourse, updateCourse } from "../features/courseSlice";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
-  const [course, setCourse] = useState("");
+const Courses = () => {
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.courses.courses);
+
+  const [newCourse, setNewCourse] = useState("");
   const [editCourse, setEditCourse] = useState(null);
-  const [newCourseName, setNewCourseName] = useState("");
+  const [updatedCourse, setUpdatedCourse] = useState("");
 
-  const handleAdd = () => {
-    if (course) {
-      onAdd(course); // This will call the dispatch function passed from the parent component
-      setCourse(""); // Clear input after adding
+  const handleAddCourse = () => {
+    if (newCourse.trim()) {
+      dispatch(addCourse(newCourse));
+      setNewCourse(""); // Clear input after adding
     }
   };
 
-  const handleEdit = (courseName) => {
-    setEditCourse(courseName);
-    setNewCourseName(courseName);
+  const handleEditCourse = (course) => {
+    setEditCourse(course);
+    setUpdatedCourse(course);
   };
 
-  const handleUpdate = () => {
-    if (newCourseName !== editCourse) {
-      onUpdate(editCourse, newCourseName); // This will call the dispatch function passed from the parent component
+  const handleUpdateCourse = () => {
+    if (updatedCourse.trim() && updatedCourse !== editCourse) {
+      dispatch(updateCourse({ oldCourse: editCourse, newCourse: updatedCourse }));
+      setEditCourse(null);
+      setUpdatedCourse("");
     }
-    setEditCourse(null);
-    setNewCourseName("");
   };
 
-  const handleCancel = () => {
-    setEditCourse(null);
-    setNewCourseName("");
+  const handleDeleteCourse = (course) => {
+    dispatch(deleteCourse(course));
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-      <h3 className="text-xl font-semibold mb-4 text-green-600">Courses</h3>
-      <div className="flex space-x-4 mb-4">
+    <div className="bg-white p-8 rounded-lg shadow-md">
+      <h2 className="text-3xl font-semibold text-center text-gray-700 mb-6">Manage Courses</h2>
+
+      {/* Add Course Section */}
+      <div className="mb-6 flex justify-center space-x-4">
         <input
           type="text"
-          className="px-4 py-2 border border-gray-300 rounded-lg w-full"
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
-          placeholder="New course"
+          className="border px-4 py-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-green-500"
+          value={newCourse}
+          onChange={(e) => setNewCourse(e.target.value)}
+          placeholder="Enter course name"
         />
         <button
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-          onClick={handleAdd}
+          onClick={handleAddCourse}
+          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          Add
+          Add Course
         </button>
       </div>
 
-      <ul className="space-y-2">
+      {/* List of Courses */}
+      <ul className="space-y-4">
         {courses.map((course, index) => (
           <li
             key={index}
-            className="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-lg shadow-sm"
+            className="bg-gray-100 p-4 rounded-lg flex justify-between items-center shadow-sm"
           >
             {editCourse === course ? (
-              <div className="flex space-x-2">
+              <div className="flex space-x-4">
                 <input
                   type="text"
-                  value={newCourseName}
-                  className="px-4 py-2 border border-gray-300 rounded-lg"
-                  onChange={(e) => setNewCourseName(e.target.value)}
+                  className="border px-4 py-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={updatedCourse}
+                  onChange={(e) => setUpdatedCourse(e.target.value)}
                 />
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  onClick={handleUpdate}
+                  onClick={handleUpdateCourse}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  OK
+                  Update
                 </button>
                 <button
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-                  onClick={handleCancel}
+                  onClick={() => setEditCourse(null)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   Cancel
                 </button>
               </div>
             ) : (
               <div className="flex justify-between w-full">
-                <span className="text-gray-700">{course}</span>
+                <span className="text-lg text-gray-700">{course}</span>
                 <div className="space-x-2">
                   <button
-                    className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-                    onClick={() => onDelete(course)} // Dispatch delete
+                    onClick={() => handleDeleteCourse(course)}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                   >
                     Delete
                   </button>
                   <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600"
-                    onClick={() => handleEdit(course)}
+                    onClick={() => handleEditCourse(course)}
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   >
                     Edit
                   </button>
@@ -111,3 +119,4 @@ const Courses = ({ courses, onAdd, onDelete, onUpdate }) => {
 };
 
 export default Courses;
+
